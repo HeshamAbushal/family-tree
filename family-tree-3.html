@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#13151f">
+<title>شجرة عائلة آل عبدالقادر أبوالخير أبوشال</title>
+<style>
+  /* Arabic system fonts — work offline on iOS, Android, Windows */
+  @font-face {
+    font-family: 'AppArabic';
+    src: local('SF Arabic'), local('Geeza Pro'), local('Tahoma'),
+         local('Arial Unicode MS'), local('Helvetica Neue');
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: 'AppArabic';
+    src: local('SF Arabic'), local('Geeza Pro'), local('Tahoma'),
+         local('Arial Unicode MS'), local('Helvetica Neue');
+    font-weight: 700;
+  }
+</style>
+<style>
+:root {
+  --bg: #0f1117;
+  --sidebar: #13151f;
+  --surface: #1a1d27;
+  --surface2: #222636;
+  --border: #2a2d3e;
+  --gold: #c9a84c;
+  --gold-light: #e8c97a;
+  --gold-dim: rgba(201,168,76,0.12);
+  --male: #3a7bd5;
+  --male-light: #5a9bf5;
+  --male-dim: rgba(58,123,213,0.13);
+  --female: #c4687a;
+  --female-light: #e4889a;
+  --female-dim: rgba(196,104,122,0.13);
+  --deceased: #555;
+  --deceased-light: #888;
+  --text: #e8e8f0;
+  --text-muted: #7880a0;
+  --line: #2e3347;
+  --radius: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'SF Arabic', 'Geeza Pro', 'Tahoma', 'Arial Unicode MS', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  height: 56px;
+  background: var(--sidebar);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 20px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+.topbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.topbar-title {
+  font-family: 'SF Arabic', 'Geeza Pro', Georgia, serif;
+  font-size: 1.1rem;
+  color: var(--gold-light);
+  font-weight: 700;
+  flex: 1;
+}
+.topbar-icon { font-size: 1.3rem; }
+.search-wrap { position: relative; }
+.search-input {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 34px 7px 12px;
+  color: var(--text);
+  font-family: 'SF Arabic', 'Geeza Pro', Tahoma, Arial, sans-serif;
+  font-size: 0.88rem;
+  width: 200px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--gold); }
+.search-input::placeholder { color: var(--text-muted); }
+.search-icon {
+  position: absolute; left: 10px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted); font-size: 0.85rem; pointer-events: none;
+}
+.search-dropdown {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; max-height: 260px; overflow-y: auto;
+  z-index: 200; box-shadow: 0 8px 32px rgba(0,0,0,0.5); display: none;
+}
+.search-dropdown.open { display: block; }
+.search-item {
+  padding: 9px 14px; cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem; display: flex; align-items: center; gap: 8px;
+  transition: background 0.12s;
+}
+.search-item:last-child { border-bottom: none; }
+.search-item:hover { background: var(--gold-dim); }
+.s-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* Stats */
+
+
+/* ── LAYOUT ── */
+.main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 260px;
+  background: var(--sidebar);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.sidebar-header {
+  padding: 14px 16px 10px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.sidebar-scroll { overflow-y: auto; flex: 1; padding: 8px 0; }
+.sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* Sidebar tree items */
+.s-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 16px; cursor: pointer;
+  transition: background 0.12s; position: relative;
+  font-size: 0.88rem; color: var(--text);
+  border-right: 2px solid transparent;
+}
+.s-item:hover { background: var(--surface2); }
+.s-item.active {
+  background: var(--gold-dim);
+  border-right-color: var(--gold);
+  color: var(--gold-light);
+}
+.s-item .s-chevron {
+  margin-right: auto; font-size: 0.65rem;
+  color: var(--text-muted); transition: transform 0.2s; flex-shrink: 0;
+}
+.s-item.open > .s-chevron { transform: rotate(90deg); }
+.s-glyph {
+  width: 20px; height: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; flex-shrink: 0;
+  border: 1.5px solid;
+}
+.s-glyph.male { background: var(--male-dim); border-color: var(--male); color: var(--male-light); }
+.s-glyph.female { background: var(--female-dim); border-color: var(--female); color: var(--female-light); }
+.s-glyph.deceased { background: rgba(80,80,80,0.15); border-color: var(--deceased); color: var(--deceased-light); }
+.s-indent { padding-right: 28px; }
+.s-indent2 { padding-right: 44px; }
+.s-indent3 { padding-right: 60px; }
+.s-children { display: none; }
+.s-children.open { display: block; }
+.s-count {
+  font-size: 0.68rem; color: var(--text-muted);
+  background: var(--surface2); border-radius: 10px;
+  padding: 1px 6px; margin-right: 2px;
+}
+
+/* ── MAIN CONTENT ── */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 28px 32px 60px;
+  scroll-behavior: smooth;
+}
+.content::-webkit-scrollbar { width: 6px; }
+.content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.content::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  flex-wrap: wrap; margin-bottom: 24px;
+  font-size: 0.82rem; color: var(--text-muted);
+}
+.bc-item { color: var(--gold); cursor: pointer; transition: color 0.15s; }
+.bc-item:hover { color: var(--gold-light); }
+.bc-sep { color: var(--border); }
+.back-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 4px 12px;
+  color: var(--gold-light);
+  font-family: 'SF Arabic', 'Geeza Pro', Tahoma, Arial, sans-serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  display: flex; align-items: center; gap: 5px;
+}
+.back-btn:hover { background: var(--gold-dim); border-color: var(--gold); }
+
+/* Welcome screen */
+.welcome {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 70vh; text-align: center; color: var(--text-muted);
+}
+.welcome-icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.4; }
+.welcome h2 { font-family: 'SF Arabic', 'Geeza Pro', Georgia, serif; font-size: 1.5rem; color: var(--text); margin-bottom: 8px; }
+.welcome p { font-size: 0.9rem; max-width: 340px; line-height: 1.6; }
+
+/* ── PERSON CARD ── */
+.person-section { margin-bottom: 40px; }
+.gen-label {
+  font-size: 0.68rem; color: var(--text-muted);
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+}
+.gen-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+/* Root person — big card at top */
+.root-card {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 28px;
+  display: flex; align-items: center; gap: 20px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.root-card::before {
+  content: '';
+  position: absolute; top: 0; right: 0; bottom: 0; width: 4px;
+  border-radius: 0 16px 16px 0;
+}
+.root-card.male::before { background: var(--male); }
+.root-card.female::before { background: var(--female); }
+.root-card.deceased::before { background: var(--deceased); }
+.root-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; flex-shrink: 0; border: 2px solid;
+  overflow: hidden;
+}
+.root-avatar img, .child-avatar img, .s-glyph img, .detail-avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover; border-radius: 50%;
+  display: block;
+}
+.no-photo::after {
+  content: attr(data-icon);
+  font-size: inherit;
+}
+.root-avatar.male { background: var(--male-dim); border-color: var(--male); }
+.root-avatar.female { background: var(--female-dim); border-color: var(--female); }
+.root-avatar.deceased { background: rgba(80,80,80,0.2); border-color: var(--deceased); filter: grayscale(1); }
+.root-info { flex: 1; }
+.root-name {
+  font-family: 'SF Arabic', 'Geeza Pro', Georgia, serif;
+  font-size: 1.4rem; font-weight: 700;
+  color: var(--text); margin-bottom: 6px;
+}
+.root-name.deceased-text { opacity: 0.75; }
+.root-spouses { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+.spouse-tag {
+  background: var(--gold-dim); color: var(--gold-light);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 20px; padding: 3px 10px;
+  font-size: 0.78rem; display: flex; align-items: center; gap: 4px;
+}
+.spouse-tag.deceased-spouse {
+  background: rgba(80,80,80,0.12);
+  color: var(--deceased-light);
+  border-color: rgba(80,80,80,0.25);
+  filter: grayscale(1);
+}
+.root-meta { font-size: 0.8rem; color: var(--text-muted); }
+.root-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.action-btn {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 14px;
+  font-family: 'SF Arabic', 'Geeza Pro', Tahoma, Arial, sans-serif; font-size: 0.8rem;
+  color: var(--text-muted); cursor: pointer; transition: all 0.2s;
+  white-space: nowrap;
+}
+.action-btn:hover { border-color: var(--gold); color: var(--gold-light); background: var(--gold-dim); }
+
+/* Children grid */
+.children-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.child-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  border-top: 3px solid transparent;
+}
+.child-card:hover {
+  border-color: var(--gold);
+  background: var(--surface2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+}
+.child-card.male { border-top-color: var(--male); }
+.child-card.female { border-top-color: var(--female); }
+.child-card.deceased { border-top-color: var(--deceased); opacity: 0.7; }
+.child-card.highlighted {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 2px var(--gold-dim), 0 6px 24px rgba(201,168,76,0.2);
+  animation: pulse 1.5s ease-in-out 3;
+}
+@keyframes pulse {
+  50% { box-shadow: 0 0 0 4px rgba(201,168,76,0.3), 0 6px 24px rgba(201,168,76,0.35); }
+}
+.child-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.child-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; flex-shrink: 0; border: 1.5px solid;
+  overflow: hidden;
+}
+.child-avatar.male { background: var(--male-dim); border-color: var(--male); }
+.child-avatar.female { background: var(--female-dim); border-color: var(--female); }
+.child-avatar.deceased { background: rgba(80,80,80,0.15); border-color: var(--deceased); filter: grayscale(1); }
+.child-name {
+  font-size: 0.93rem; font-weight: 700; color: var(--text); line-height: 1.3;
+}
+.child-name.deceased-text {
+  opacity: 0.75;
+}
+.child-spouse {
+  font-size: 0.72rem; color: var(--text-muted);
+  display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px;
+}
+.child-spouse-badge {
+  background: var(--gold-dim); color: var(--gold-light);
+  border-radius: 4px; padding: 1px 6px; font-size: 0.68rem;
+}
+.child-spouse-badge.deceased-spouse {
+  background: rgba(80,80,80,0.15);
+  color: var(--deceased-light);
+  border-color: rgba(80,80,80,0.25);
+  filter: grayscale(1);
+}
+.child-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 6px;
+}
+.child-count { font-size: 0.7rem; color: var(--text-muted); }
+.drill-btn {
+  font-size: 0.7rem; color: var(--gold);
+  background: var(--gold-dim); border: none;
+  border-radius: 6px; padding: 3px 8px; cursor: pointer;
+  transition: all 0.15s; font-family: 'SF Arabic', 'Geeza Pro', Tahoma, Arial, sans-serif;
+}
+.drill-btn:hover { background: rgba(201,168,76,0.25); }
+
+/* Spouse group header */
+.spouse-group-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px; gap: 10px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  border-right: 3px solid var(--gold);
+}
+.spouse-group-header.deceased-spouse-header {
+  border-right-color: var(--deceased);
+  filter: grayscale(1);
+  opacity: 0.75;
+}
+
+.spouse-group-name {
+  font-size: 0.88rem; font-weight: 700; color: var(--text);
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.spouse-group-count {
+  font-size: 0.72rem; color: var(--text-muted);
+  background: var(--surface2); border-radius: 10px;
+  padding: 2px 8px; white-space: nowrap; flex-shrink: 0;
+}
+.spouse-group-tag {
+  font-size: 0.65rem; border-radius: 4px;
+  padding: 1px 7px; font-weight: 400;
+  background: var(--gold-dim); color: var(--gold-light);
+  border: 1px solid rgba(201,168,76,0.25);
+}
+.spouse-group-tag.divorced {
+  background: rgba(248,113,113,0.1);
+  color: #f87171;
+  border-color: rgba(248,113,113,0.25);
+}
+
+
+.connector-line {
+  width: 2px; height: 24px;
+  background: linear-gradient(180deg, var(--border), transparent);
+  margin: 0 auto 0;
+  position: relative;
+}
+.connector-line::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border);
+}
+
+/* Legend */
+.legend-bar {
+  display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
+  padding: 8px 32px;
+  background: var(--sidebar);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.75rem; color: var(--text-muted);
+  flex-shrink: 0;
+}
+.leg { display: flex; align-items: center; gap: 5px; }
+.leg-dot { width: 9px; height: 9px; border-radius: 2px; }
+.leg-dot.male { background: var(--male); }
+.leg-dot.female { background: var(--female); }
+.leg-dot.deceased { background: var(--deceased); }
+.leg-hint { margin-right: auto; font-size: 0.72rem; }
+
+/* Detail panel (right side) */
+.detail-panel {
+  width: 0; overflow: hidden;
+  background: var(--sidebar);
+  border-left: 1px solid var(--border);
+  transition: width 0.3s ease;
+  flex-shrink: 0;
+  display: flex; flex-direction: column;
+}
+.detail-panel.open { width: 280px; }
+.detail-inner { padding: 20px 16px; overflow-y: auto; flex: 1; }
+.detail-inner::-webkit-scrollbar { width: 4px; }
+.detail-inner::-webkit-scrollbar-thumb { background: var(--border); }
+.detail-close {
+  position: absolute; top: 12px; left: 12px;
+  cursor: pointer; color: var(--text-muted);
+  font-size: 1rem; transition: color 0.15s;
+}
+.detail-close:hover { color: var(--text); }
+.detail-name {
+  font-family: 'SF Arabic', 'Geeza Pro', Georgia, serif; font-size: 1.2rem;
+  color: var(--gold-light); margin-bottom: 12px; line-height: 1.4;
+}
+.detail-row {
+  display: flex; gap: 8px; margin-bottom: 8px;
+  font-size: 0.83rem; color: var(--text-muted); align-items: flex-start;
+}
+.detail-row strong { color: var(--text); flex-shrink: 0; }
+.detail-children { margin-top: 12px; }
+.detail-child-item {
+  padding: 6px 10px; border-radius: 6px;
+  background: var(--surface2); margin-bottom: 4px;
+  font-size: 0.82rem; cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+  transition: background 0.12s;
+}
+.detail-child-item:hover { background: var(--gold-dim); }
+
+/* ── MOBILE — iPhone first ── */
+@media (max-width: 700px) {
+  .stat-pill { display: none; }
+  .search-input { width: 140px; }
+}
+
+@media (max-width: 640px) {
+  /* Layout */
+  html, body { overflow: hidden; }
+  body { padding-top: env(safe-area-inset-top, 0px); }
+
+  /* Topbar */
+  .topbar {
+    height: 52px;
+    padding: 0 max(14px, env(safe-area-inset-right, 14px)) 0 max(14px, env(safe-area-inset-left, 14px));
+    gap: 8px;
+  }
+  .topbar-title { font-size: 0.82rem; line-height: 1.2; }
+  .topbar-icon { font-size: 1.1rem; flex-shrink: 0; }
+  .stat-pill { display: none; }
+  .search-wrap { display: none; }
+
+  /* Legend */
+  .legend-bar {
+    padding: 7px max(14px, env(safe-area-inset-right, 14px));
+    font-size: 0.72rem; gap: 10px;
+  }
+  .leg-hint { display: none; }
+
+  /* Sidebar — slide-in drawer from the right */
+  .sidebar {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 78vw; max-width: 290px;
+    z-index: 300;
+    transform: translateX(102%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -12px 0 40px rgba(0,0,0,0.65);
+    padding-top: calc(52px + env(safe-area-inset-top, 0px) + 8px);
+    display: flex !important;
+  }
+  .sidebar.mobile-open { transform: translateX(0); }
+
+  /* Overlay behind sidebar */
+  .sidebar-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 299;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
+  .sidebar-overlay.visible { display: block; }
+
+  /* Main content */
+  .content {
+    padding: 14px 14px calc(74px + env(safe-area-inset-bottom, 0px));
+    padding-right: max(14px, env(safe-area-inset-right, 0px));
+    padding-left: max(14px, env(safe-area-inset-left, 0px));
+  }
+
+  /* Detail panel — bottom sheet */
+  .detail-panel {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    width: 100% !important;
+    max-height: 0;
+    border-radius: 18px 18px 0 0;
+    border-top: 1px solid var(--border);
+    border-left: none;
+    overflow: hidden;
+    transition: max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 400;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .detail-panel.open { max-height: 72vh; }
+  .detail-panel::before {
+    content: '';
+    display: block;
+    width: 36px; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 10px auto 0;
+  }
+  .detail-inner {
+    padding: 16px 18px calc(16px + env(safe-area-inset-bottom, 0px));
+    max-height: calc(72vh - 24px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Root card */
+  .root-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 10px;
+    margin-bottom: 16px;
+    border-radius: 14px;
+  }
+  .root-avatar { width: 52px; height: 52px; font-size: 1.4rem; }
+  .root-name { font-size: 1.1rem; }
+  .root-actions { width: 100%; }
+  .action-btn { width: 100%; text-align: center; padding: 10px; font-size: 0.88rem; }
+  .spouse-tag { font-size: 0.72rem; padding: 2px 8px; }
+
+  /* Children grid — 2 columns */
+  .children-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .child-card { padding: 11px 11px; border-radius: 10px; }
+  .child-avatar { width: 30px; height: 30px; font-size: 0.8rem; }
+  .child-name { font-size: 0.85rem; }
+  .child-spouse { display: none; } /* too cluttered on small cards */
+  .child-count { font-size: 0.68rem; }
+  .drill-btn { font-size: 0.7rem; padding: 5px 8px; }
+
+  /* Breadcrumb — horizontal scroll */
+  .breadcrumb {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    margin-bottom: 14px;
+    gap: 4px;
+    scrollbar-width: none;
+  }
+  .breadcrumb::-webkit-scrollbar { display: none; }
+  .bc-item { white-space: nowrap; font-size: 0.78rem; }
+  .bc-sep { flex-shrink: 0; }
+  .back-btn {
+    font-size: 0.78rem; padding: 6px 10px;
+    white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* Bottom nav bar */
+  .bottom-nav { display: flex !important; }
+}
+
+/* Bottom nav — hidden desktop, shown mobile */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: calc(58px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  background: var(--sidebar);
+  border-top: 1px solid var(--border);
+  z-index: 200;
+  align-items: center;
+  justify-content: space-around;
+}
+.nav-btn {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 3px; flex: 1; height: 100%;
+  cursor: pointer; color: var(--text-muted);
+  font-size: 0.62rem; border: none; background: none;
+  font-family: 'SF Arabic', 'Geeza Pro', Tahoma, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.15s;
+}
+.nav-btn:active { color: var(--gold-light); }
+.nav-btn.active { color: var(--gold-light); }
+.nav-icon { font-size: 1.35rem; line-height: 1; }
+
+/* Full-screen search modal */
+.search-modal {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  z-index: 500;
+  display: none;
+  flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.search-modal.open { display: flex; }
+.search-modal-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.search-modal-input {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: 'SF Arabic', 'Geeza Pro', Tahoma, Arial, sans-serif;
+  font-size: 1rem;
+  outline: none;
+  -webkit-appearance: none;
+}
+.search-modal-input:focus { border-color: var(--gold); }
+.search-modal-cancel {
+  color: var(--gold); font-size: 0.9rem; cursor: pointer;
+  white-space: nowrap; flex-shrink: 0;
+  font-family: 'SF Arabic', 'Geeza Pro', Tahoma, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  padding: 8px 4px;
+}
+.search-modal-results {
+  overflow-y: auto; flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+.search-modal-item {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer; font-size: 0.95rem;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 60px;
+}
+.search-modal-item:active { background: var(--surface2); }
+
+/* ── OPEN IN SAFARI BANNER ── */
+.safari-banner {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+  background: linear-gradient(135deg, #1a2e1a, #0f1f0f);
+  border-bottom: 2px solid #2d9c56;
+  padding: 14px 18px;
+  padding-top: max(14px, calc(env(safe-area-inset-top, 0px) + 8px));
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+}
+.safari-banner-row {
+  display: flex; align-items: center; gap: 12px;
+}
+.safari-banner-icon { font-size: 1.8rem; flex-shrink: 0; }
+.safari-banner-text { flex: 1; }
+.safari-banner-text strong {
+  display: block;
+  color: #7efbb0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.safari-banner-text span {
+  color: #5dba88;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+.safari-banner-close {
+  color: #5dba88; font-size: 1.2rem;
+  cursor: pointer; padding: 4px;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.safari-banner-steps {
+  background: rgba(0,0,0,0.3);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.safari-step {
+  display: flex; align-items: center; gap: 10px;
+  color: #a8e6c3; font-size: 0.82rem;
+}
+.safari-step-num {
+  width: 20px; height: 20px;
+  background: #2d9c56; color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700; flex-shrink: 0;
+}
+
+
+  position: fixed; background: var(--surface);
+  border: 1px solid var(--gold); border-radius: 10px;
+  padding: 12px 14px; font-size: 0.8rem; color: var(--text);
+  z-index: 999; pointer-events: none; max-width: 240px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6); display: none; line-height: 1.6;
+}
+.tooltip.visible { display: block; }
+.tt-name { font-size: 0.95rem; font-weight: 700; color: var(--gold-light); margin-bottom: 4px; }
+.tt-row { color: var(--text-muted); font-size: 0.78rem; }
+.tt-row b { color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- OPEN IN SAFARI BANNER — shown only inside WhatsApp/Messages in-app browser -->
+<div class="safari-banner" id="safariBanner">
+  <div class="safari-banner-row">
+    <span class="safari-banner-icon">🌳</span>
+    <div class="safari-banner-text">
+      <strong>افتح في Safari للتجربة الكاملة</strong>
+      <span>هذا الملف لا يعمل بشكل صحيح داخل واتساب أو الرسائل</span>
+    </div>
+    <span class="safari-banner-close" onclick="document.getElementById('safariBanner').style.display='none'">✕</span>
+  </div>
+  <div class="safari-banner-steps">
+    <div class="safari-step"><div class="safari-step-num">1</div>اضغط على أيقونة الـ <strong style="color:#7efbb0">⋯</strong> أو <strong style="color:#7efbb0">Share</strong> في الأعلى</div>
+    <div class="safari-step"><div class="safari-step-num">2</div>اختر <strong style="color:#7efbb0">"Open in Safari"</strong> أو <strong style="color:#7efbb0">"فتح في Safari"</strong></div>
+    <div class="safari-step"><div class="safari-step-num">3</div>استمتع بالشجرة كاملةً 🎉</div>
+  </div>
+</div>
+<div class="topbar">
+  <span class="topbar-icon">🌳</span>
+  <div class="topbar-title">شجرة عائلة آل عبدالقادر أبوالخير أبوشال</div>
+
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="searchInput" placeholder="ابحث عن شخص..." autocomplete="off">
+    <div class="search-dropdown" id="searchDropdown"></div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend-bar">
+  <div class="leg"><div class="leg-dot male"></div>ذكر</div>
+  <div class="leg"><div class="leg-dot female"></div>أنثى</div>
+  <div class="leg"><div class="leg-dot deceased"></div>متوفى</div>
+  <div class="leg-hint">اختر شخصاً من القائمة الجانبية لعرض فرعه</div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-header">أفراد العائلة</div>
+    <div class="sidebar-scroll" id="sidebarTree"></div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content" id="mainContent">
+    <div class="welcome">
+      <div class="welcome-icon">🌳</div>
+      <h2>شجرة عائلة آل عبدالقادر أبوالخير أبوشال</h2>
+      <p>اختر أي شخص من القائمة الجانبية لعرض فرعه وأبنائه وأحفاده</p>
+    </div>
+  </div>
+
+  <!-- DETAIL PANEL -->
+  <div class="detail-panel" id="detailPanel">
+    <div class="detail-inner" id="detailInner"></div>
+  </div>
+
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<!-- Mobile: overlay behind sidebar -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
+
+<!-- Mobile: bottom navigation -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="nav-btn" onclick="showPerson(familyData.id)">
+    <span class="nav-icon">🏠</span><span>الرئيسية</span>
+  </button>
+  <button class="nav-btn" onclick="openMobileSidebar()">
+    <span class="nav-icon">🌳</span><span>الشجرة</span>
+  </button>
+  <button class="nav-btn" onclick="openMobileSearch()">
+    <span class="nav-icon">🔍</span><span>بحث</span>
+  </button>
+  <button class="nav-btn" id="navBackBtn" style="display:none" onclick="mobileGoBack()">
+    <span class="nav-icon">↩</span><span>رجوع</span>
+  </button>
+</nav>
+
+<!-- Mobile: full-screen search -->
+<div class="search-modal" id="searchModal">
+  <div class="search-modal-bar">
+    <input class="search-modal-input" id="mobileSearchInput" placeholder="ابحث عن شخص..." autocomplete="off">
+    <span class="search-modal-cancel" onclick="closeMobileSearch()">إلغاء</span>
+  </div>
+  <div class="search-modal-results" id="mobileSearchResults">
+    <div style="padding:40px 20px;text-align:center;color:var(--text-muted)">اكتب اسماً للبحث</div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────
+const familyData = {
+  id: "root", name: "عبدالقادر أبوالخير أبوشال", gender: "male",
+          photo: "images/root.jpg", deceased: true,
+  father: "", mother: "",
+  spouses: [{name:"خديجة حسن دعجاني", deceased:true}],
+  children: [
+    {
+      id: "c1", name: "نائلة", gender: "female",
+          photo: "images/c1.jpg",
+      father: "عبدالقادر أبوالخير أبوشال", mother: "خديجة حسن دعجاني",
+      spouses: [{name:"عبدالغني قواص", deceased:true}],
+      children: [
+        { id:"c1_1", name:"عماد", gender:"male",
+          photo: "images/c1_1.jpg",
+          father:"عبدالغني قواص", mother:"نائلة",
+          spouses:["سمر أحمد الوصابي"], children:[
+          { id:"c1_1_1", name:"ود", gender:"female",
+          photo: "images/c1_1_1.jpg", father:"عماد", mother:"سمر أحمد الوصابي", spouses:["عمار ياسر حكمي"], children:[] },
+          { id:"c1_1_2", name:"أحمد", gender:"male",
+          photo: "images/c1_1_2.jpg", father:"عماد", mother:"سمر أحمد الوصابي", spouses:["فتون محمد الأزهري"], children:[] },
+          { id:"c1_1_3", name:"لين", gender:"female",
+          photo: "images/c1_1_3.jpg", father:"عماد", mother:"سمر أحمد الوصابي", children:[] },
+          { id:"c1_1_4", name:"تالا", gender:"female",
+          photo: "images/c1_1_4.jpg", father:"عماد", mother:"سمر أحمد الوصابي", children:[] },
+          { id:"c1_1_5", name:"داليا", gender:"female",
+          photo: "images/c1_1_5.jpg", father:"عماد", mother:"سمر أحمد الوصابي", children:[] }
+        ]},
+        { id:"c1_2", name:"هنادي", gender:"female",
+          photo: "images/c1_2.jpg",
+          father:"عبدالغني قواص", mother:"نائلة",
+          spouses:["نادر يلي"], children:[
+          { id:"c1_2_1", name:"شذى", gender:"female",
+          photo: "images/c1_2_1.jpg", father:"نادر يلي", mother:"هنادي", children:[] },
+          { id:"c1_2_2", name:"يزيد", gender:"male",
+          photo: "images/c1_2_2.jpg", father:"نادر يلي", mother:"هنادي", children:[] },
+          { id:"c1_2_3", name:"عبدالرزاق", gender:"male",
+          photo: "images/c1_2_3.jpg", father:"نادر يلي", mother:"هنادي", children:[] },
+          { id:"c1_2_4", name:"جمانه", gender:"female",
+          photo: "images/c1_2_4.jpg", father:"نادر يلي", mother:"هنادي", children:[] }
+        ]},
+        { id:"c1_3", name:"غسان", gender:"male",
+          photo: "images/c1_3.jpg",
+          father:"عبدالغني قواص", mother:"نائلة",
+          spouses:["رؤى قطان"], children:[
+          { id:"c1_3_1", name:"أمين", gender:"male",
+          photo: "images/c1_3_1.jpg", father:"غسان", mother:"رؤى قطان", children:[] },
+          { id:"c1_3_2", name:"نبيل", gender:"male",
+          photo: "images/c1_3_2.jpg", father:"غسان", mother:"رؤى قطان", children:[] },
+          { id:"c1_3_3", name:"سيرين", gender:"female",
+          photo: "images/c1_3_3.jpg", father:"غسان", mother:"رؤى قطان", children:[] },
+          { id:"c1_3_4", name:"نادين", gender:"female",
+          photo: "images/c1_3_4.jpg", father:"غسان", mother:"رؤى قطان", children:[] }
+        ]},
+        { id:"c1_4", name:"مصطفى", gender:"male",
+          photo: "images/c1_4.jpg",
+          father:"عبدالغني قواص", mother:"نائلة",
+          spouses:["خلود كمال قواص"], children:[
+          { id:"c1_4_1", name:"عبدالغني", gender:"male",
+          photo: "images/c1_4_1.jpg", father:"مصطفى", mother:"خلود كمال قواص", children:[] },
+          { id:"c1_4_2", name:"لانا", gender:"female",
+          photo: "images/c1_4_2.jpg", father:"مصطفى", mother:"خلود كمال قواص", children:[] },
+          { id:"c1_4_3", name:"دانا", gender:"female",
+          photo: "images/c1_4_3.jpg", father:"مصطفى", mother:"خلود كمال قواص", children:[] }
+        ]},
+        { id:"c1_5", name:"أشواق", gender:"female",
+          photo: "images/c1_5.jpg",
+          father:"عبدالغني قواص", mother:"نائلة",
+          spouses:["أحمد بدرالدين"], children:[
+          { id:"c1_5_1", name:"محمود", gender:"male",
+          photo: "images/c1_5_1.jpg", father:"أحمد بدرالدين", mother:"أشواق", children:[] },
+          { id:"c1_5_2", name:"سارة", gender:"female",
+          photo: "images/c1_5_2.jpg", father:"أحمد بدرالدين", mother:"أشواق", children:[] },
+          { id:"c1_5_3", name:"عمار", gender:"male",
+          photo: "images/c1_5_3.jpg", father:"أحمد بدرالدين", mother:"أشواق", children:[] },
+          { id:"c1_5_4", name:"أنس", gender:"male",
+          photo: "images/c1_5_4.jpg", father:"أحمد بدرالدين", mother:"أشواق", children:[] }
+        ]}
+      ]
+    },
+    {
+      id: "c2", name: "وصفية", gender: "female",
+          photo: "images/c2.jpg",
+      father: "عبدالقادر أبوالخير أبوشال", mother: "خديجة حسن دعجاني",
+      spouses: [{name: "حسين حسن أبوركبة", deceased:true}],
+      children: [
+        { id:"c2_1", name:"تغريد", gender:"female",
+          photo: "images/c2_1.jpg",
+          father:"حسين حسن أبوركبة", mother:"وصفية",
+          spouses:["محمد علي سعداوي"], children:[
+          { id:"c2_1_1", name:"غدي", gender:"female",
+          photo: "images/c2_1_1.jpg", father:"محمد علي سعداوي", mother:"تغريد", spouses:[{name: "عبدالرحمن بكيش", divorced:true},"عبدالله هاني كتوري"], children:[
+            { id:"c2_1_1_1", name:"وسن", gender:"female",
+          photo: "images/c2_1_1_1.jpg", father:"عبدالرحمن بكيش", mother:"غدي", children:[] },
+            { id:"c2_1_1_2", name:"محمد", gender:"male",
+          photo: "images/c2_1_1_2.jpg", father:"عبدالله هاني كتوري", mother:"غدي", children:[] }
+          ]},
+          { id:"c2_1_2", name:"مصعب", gender:"male",
+          photo: "images/c2_1_2.jpg", father:"محمد علي سعداوي", mother:"تغريد", spouses:["هبه فؤاد داغستاني"], children:[] },
+          { id:"c2_1_3", name:"ياسمين", gender:"female",
+          photo: "images/c2_1_3.jpg", father:"محمد علي سعداوي", mother:"تغريد", spouses:["سعود مليباري"], children:[
+            { id:"c2_1_3_1", name:"غالية", gender:"female",
+          photo: "images/c2_1_3_1.jpg", father:"سعود مليباري", mother:"ياسمين", children:[] }
+          ]},
+          { id:"c2_1_4", name:"روان", gender:"female",
+          photo: "images/c2_1_4.jpg", father:"محمد علي سعداوي", mother:"تغريد", spouses:["مالك منير كركدان"], children:[] },
+          { id:"c2_1_5", name:"زياد", gender:"male",
+          photo: "images/c2_1_5.jpg", father:"محمد علي سعداوي", mother:"تغريد", children:[] },
+          { id:"c2_1_6", name:"البراء", gender:"male",
+          photo: "images/c2_1_6.jpg", father:"محمد علي سعداوي", mother:"تغريد", children:[] },
+          { id:"c2_1_7", name:"نوران", gender:"female",
+          photo: "images/c2_1_7.jpg", father:"محمد علي سعداوي", mother:"تغريد", children:[] }
+        ]},
+        { id:"c2_2", name:"وائل", gender:"male",
+          photo: "images/c2_2.jpg",
+          father:"حسين حسن أبوركبة", mother:"وصفية",
+          spouses:["آلاء إبراهيم بصنوي"], children:[
+          { id:"c2_2_1", name:"ميرال", gender:"female",
+          photo: "images/c2_2_1.jpg", father:"وائل", mother:"آلاء إبراهيم بصنوي", children:[] },
+          { id:"c2_2_2", name:"ليال", gender:"female",
+          photo: "images/c2_2_2.jpg", father:"وائل", mother:"آلاء إبراهيم بصنوي", children:[] },
+          { id:"c2_2_3", name:"حسين", gender:"male",
+          photo: "images/c2_2_3.jpg", father:"وائل", mother:"آلاء إبراهيم بصنوي", children:[] }
+        ]},
+        { id:"c2_3", name:"غيداء", gender:"female",
+          photo: "images/c2_3.jpg", father:"حسين حسن أبوركبة", mother:"وصفية", spouses:["عبدالقادر إبراهيم أبوشال"], children:[] },
+        { id:"c2_4", name:"حسن", gender:"male",
+          photo: "images/c2_4.jpg",
+          father:"حسين حسن أبوركبة", mother:"وصفية",
+          spouses:["إبتهال يحى آل عارضة"], children:[
+          { id:"c2_4_1", name:"حسين", gender:"male",
+          photo: "images/c2_4_1.jpg", father:"حسن", mother:"إبتهال يحى آل عارضة", children:[] },
+          { id:"c2_4_2", name:"أسيل", gender:"female",
+          photo: "images/c2_4_2.jpg", father:"حسن", mother:"إبتهال يحى آل عارضة", children:[] },
+          { id:"c2_4_3", name:"ريما", gender:"female",
+          photo: "images/c2_4_3.jpg", father:"حسن", mother:"إبتهال يحى آل عارضة", children:[] }
+        ]}
+      ]
+    },
+    {
+      id: "c3", name: "إبراهيم", gender: "male",
+          photo: "images/c3.jpg",
+      father: "عبدالقادر أبوالخير أبوشال", mother: "خديجة حسن دعجاني",
+      spouses: [{name:"رقية عبدالكريم حافظ", deceased:true},"نائلة بنجر"],
+  
+      children: [
+        { id:"c3_1", name:"أماني", gender:"female",
+          photo: "images/c3_1.jpg",
+          father:"إبراهيم", mother:"رقية عبدالكريم حافظ",
+          spouses:[{name: "منير مصطفى كركدان", divorced:true}], children:[
+          { id:"c3_1_1", name:"فاطمة", gender:"female",
+          photo: "images/c3_1_1.jpg", father:"منير مصطفى كركدان", mother:"أماني", spouses:["ريان بازهير"], children:[
+            { id:"c3_1_1_1", name:"وريف", gender:"female",
+          photo: "images/c3_1_1_1.jpg", father:"ريان بازهري", mother:"فاطمة", children:[] },
+            { id:"c3_1_1_2", name:"ورد", gender:"female",
+          photo: "images/c3_1_1_2.jpg", father:"ريان بازهري", mother:"فاطمة", children:[] },
+            { id:"c3_1_1_3", name:"ياسمين", gender:"female",
+          photo: "images/c3_1_1_3.jpg", father:"ريان بازهري", mother:"فاطمة", children:[] },
+            { id:"c3_1_1_4", name:"لينة", gender:"female",
+          photo: "images/c3_1_1_4.jpg", father:"ريان بازهري", mother:"فاطمة", children:[] }
+          ]},
+          { id:"c3_1_2", name:"مالك", gender:"male",
+          photo: "images/c3_1_2.jpg", father:"منير مصطفى كركدان", mother:"أماني", spouses:["روان محمد سعداوي"], children:[] },
+          { id:"c3_1_3", name:"يوسف", gender:"male",
+          photo: "images/c3_1_3.jpg", father:"منير مصطفى كركدان", mother:"أماني", children:[] }
+        ]},
+        { id:"c3_2", name:"تهاني", gender:"female",
+          photo: "images/c3_2.jpg",
+          father:"إبراهيم", mother:"رقية عبدالكريم حافظ",
+          spouses:["عبدالمعطي حنيف"], children:[
+          { id:"c3_2_1", name:"رغد", gender:"female",
+          photo: "images/c3_2_1.jpg", father:"عبدالمعطي حنيف", mother:"تهاني", spouses:["فهد الدوسري"], children:[
+            { id:"c3_2_1_1", name:"محمد", gender:"male",
+          photo: "images/c3_2_1_1.jpg", father:"فهد الدوسري", mother:"رغد", children:[] },
+            { id:"c3_2_1_1", name:"عالية", gender:"female",
+          photo: "images/c3_2_1_1.jpg", father:"فهد الدوسري", mother:"رغد", children:[] }
+          ]},
+          { id:"c3_2_2", name:"عزام", gender:"male",
+          photo: "images/c3_2_2.jpg", father:"عبدالمعطي حنيف", mother:"تهاني", spouses:["إبتهاج عبدالرحمن العقيل"], children:[
+            { id:"c3_2_2_1", name:"هاشم", gender:"male",
+          photo: "images/c3_2_2_1.jpg", father:"عزام", mother:"إبتهاج عبدالرحمن العقيل", children:[] }
+          ]},
+          { id:"c3_2_3", name:"يوسف", gender:"male",
+          photo: "images/c3_2_3.jpg", father:"عبدالمعطي حنيف", mother:"تهاني", children:[] },
+          { id:"c3_2_4", name:"رفيف", gender:"female",
+          photo: "images/c3_2_4.jpg", father:"عبدالمعطي حنيف", mother:"تهاني", children:[] },
+          { id:"c3_2_5", name:"سرين", gender:"female",
+          photo: "images/c3_2_5.jpg", father:"عبدالمعطي حنيف", mother:"تهاني", children:[] }
+        ]},
+        { id:"c3_3", name:"عبدالقادر", gender:"male",
+          photo: "images/c3_3.jpg",
+          father:"إبراهيم", mother:"رقية عبدالكريم حافظ",
+          spouses:["غيداء حسين أبوركبة"], children:[
+          { id:"c3_3_1", name:"إبراهيم", gender:"male",
+          photo: "images/c3_3_1.jpg", father:"عبدالقادر", mother:"غيداء حسين أبوركبة", children:[] },
+          { id:"c3_3_2", name:"حسين", gender:"male",
+          photo: "images/c3_3_2.jpg", father:"عبدالقادر", mother:"غيداء حسين أبوركبة", children:[] },
+          { id:"c3_3_3", name:"ريانة", gender:"female",
+          photo: "images/c3_3_3.jpg", father:"عبدالقادر", mother:"غيداء حسين أبوركبة", children:[] },
+          { id:"c3_3_4", name:"شيمه", gender:"female",
+          photo: "images/c3_3_4.jpg", father:"عبدالقادر", mother:"غيداء حسين أبوركبة", children:[] }
+        ]},
+        { id:"c3_4", name:"عمرو", gender:"male",
+          photo: "images/c3_4.jpg",
+          father:"إبراهيم", mother:"رقية عبدالكريم حافظ",
+          spouses:["أنوار باخدلق"], children:[
+          { id:"c3_4_1", name:"روز", gender:"female",
+          photo: "images/c3_4_1.jpg", father:"عمرو", mother:"أنوار باخدلق", children:[] }
+        ]},
+        { id:"c3_5", name:"محمد", gender:"male",
+          photo: "images/c3_5.jpg",
+          father:"إبراهيم", mother:"رقية عبدالكريم حافظ",
+          spouses:["مرام باسيف"], children:[
+          { id:"c3_5_1", name:"إبراهيم", gender:"male",
+          photo: "images/c3_5_1.jpg", father:"محمد", mother:"مرام باسيف", children:[] },
+          { id:"c3_5_2", name:"آرام", gender:"female",
+          photo: "images/c3_5_2.jpg", father:"محمد", mother:"مرام باسيف", children:[] }
+        ]}
+      ]
+    },
+    {
+      id: "c4", name: "فاروق", gender: "male",
+          photo: "images/c4.jpg",
+      father: "عبدالقادر أبوالخير أبوشال", mother: "خديجة حسن دعجاني",
+      spouses: ["فاتن عمر اليماني"],
+      children: [
+        { id:"c4_1", name:"خلود", gender:"female",
+          photo: "images/c4_1.jpg",
+          father:"فاروق", mother:"فاتن عمر اليمان",
+          spouses:[{name:"رامز أبورزيزة", deceased:true},"عبدالله الفقيه"], children:[
+          { id:"c4_1_1", name:"حمزة", gender:"male",
+          photo: "images/c4_1_1.jpg", father:"رامز أبورزيزة", mother:"خلود", spouses:["روان ياسر كمال"], children:[
+            { id:"c4_1_1_1", name:"قمر", gender:"female",
+          photo: "images/c4_1_1_1.jpg", father:"حمزة", mother:"روان ياسر كمال", children:[] }
+          ]},
+          { id:"c4_1_2", name:"أحمد", gender:"male",
+          photo: "images/c4_1_2.jpg", father:"رامز أبورزيزة", mother:"خلود", children:[] },
+          { id:"c4_1_3", name:"تالين", gender:"female",
+          photo: "images/c4_1_3.jpg", father:"رامز أبورزيزة", mother:"خلود", children:[] },
+          { id:"c4_1_4", name:"تاليا", gender:"female",
+          photo: "images/c4_1_4.jpg", father:"رامز أبورزيزة", mother:"خلود", children:[] },
+          { id:"c4_1_5", name:"آية", gender:"female",
+          photo: "images/c4_1_5.jpg", father:"عبدالله الفقيه", mother:"خلود", children:[] }
+        ]},
+        { id:"c4_2", name:"عمار", gender:"male",
+          photo: "images/c4_2.jpg",
+          father:"فاروق", mother:"فاتن عمر اليماني",
+          spouses:[{name:"هديل سمير خياط", divorced:true},"سارة خالد اليماني"], children:[
+          { id:"c4_2_1", name:"لمار", gender:"female",
+          photo: "images/c4_2_1.jpg", father:"عمار", mother:"هديل سمير خياط", children:[] },
+          { id:"c4_2_2", name:"لارا", gender:"female",
+          photo: "images/c4_2_2.jpg", father:"عمار", mother:"هديل سمير خياط", children:[] },
+          { id:"c4_2_3", name:"يوسف", gender:"male",
+          photo: "images/c4_2_3.jpg", father:"عمار", mother:"هديل سمير خياط", children:[] },
+          { id:"c4_2_4", name:"لارين", gender:"female",
+          photo: "images/c4_2_4.jpg", father:"عمار", mother:"هديل سمير خياط", children:[] },
+          { id:"c4_2_5", name:"قصي", gender:"male",
+          photo: "images/c4_2_5.jpg", father:"عمار", mother:"سارة خالد اليماني", children:[] },
+          { id:"c4_2_6", name:"ود", gender:"female",
+          photo: "images/c4_2_6.jpg", father:"عمار", mother:"سارة خالد اليماني", children:[] }
+        ]},
+        { id:"c4_3", name:"صلاح", gender:"male",
+          photo: "images/c4_3.jpg",
+          father:"فاروق", mother:"فاتن عمر اليمان",
+          spouses:[{name:"ربى كركدان", divorced:true},"تهاني بن صديق"], children:[
+          { id:"c4_3_1", name:"روجين", gender:"female",
+          photo: "images/c4_3_1.jpg", father:"صلاح", mother:"ربى كركدان", children:[] },
+          { id:"c4_3_2", name:"رسيل", gender:"female",
+          photo: "images/c4_3_2.jpg", father:"صلاح", mother:"ربى كركدان", children:[] }
+        ]},
+        { id:"c4_4", name:"شروق", gender:"female",
+          photo: "images/c4_4.jpg",
+          father:"فاروق", mother:"فاتن عمر اليماني",
+          spouses:["مصطفى غازي باشا"], children:[
+          { id:"c4_4_1", name:"عمر", gender:"male",
+          photo: "images/c4_4_1.jpg", father:"مصطفى باشا", mother:"شروق", children:[] },
+          { id:"c4_4_2", name:"مريم", gender:"female",
+          photo: "images/c4_4_2.jpg", father:"مصطفى باشا", mother:"شروق", children:[] }
+        ]},
+        { id:"c4_5", name:"عبدالعزيز", gender:"male",
+          photo: "images/c4_5.jpg", father:"فاروق", mother:"فاتن عمر اليماني", spouses:["جود العمري"], children:[] }
+      ]
+    },
+    {
+      id: "c5", name: "حامد", gender: "male",
+          photo: "images/c5.jpg", deceased: true,
+      father: "عبدالقادر أبوالخير أبوشال", mother: "خديجة حسن دعجاني",
+      spouses: ["هدى فريد خوج"],
+      children: [
+        { id:"c5_1", name:"فواز", gender:"male",
+          photo: "images/c5_1.jpg",
+          father:"حامد", mother:"هدى فريد خوج",
+          spouses:[{name:"رامية شعرية", deceased:true}], children:[
+          { id:"c5_1_1", name:"حامد", gender:"male",
+          photo: "images/c5_1_1.jpg", father:"فواز", mother:"رامية شعرية", children:[] },
+          { id:"c5_1_2", name:"حلا", gender:"female",
+          photo: "images/c5_1_2.jpg", father:"فواز", mother:"رامية شعرية", children:[] },
+          { id:"c5_1_3", name:"فارس", gender:"male",
+          photo: "images/c5_1_3.jpg", father:"فواز", mother:"رامية شعرية", children:[] }
+        ]},
+        { id:"c5_2", name:"نواف", gender:"male",
+          photo: "images/c5_2.jpg",
+          father:"حامد", mother:"هدى فريد خوج",
+          spouses:["ميسر عدنان سمباوة"], children:[
+          { id:"c5_2_1", name:"لما", gender:"female",
+          photo: "images/c5_2_1.jpg", father:"نواف", mother:"ميسر عدنان سمباوة", children:[] },
+          { id:"c5_2_2", name:"باسل", gender:"male",
+          photo: "images/c5_2_2.jpg", father:"نواف", mother:"ميسر عدنان سمباوة", children:[] },
+          { id:"c5_2_3", name:"ورد", gender:"female",
+          photo: "images/c5_2_3.jpg", father:"نواف", mother:"ميسر عدنان سمباوة", children:[] },
+          { id:"c5_2_4", name:"هدى", gender:"female",
+          photo: "images/c5_2_4.jpg", father:"نواف", mother:"ميسر عدنان سمباوة", children:[] }
+        ]},
+        { id:"c5_3", name:"صفوان", gender:"male",
+          photo: "images/c5_3.jpg",
+          father:"حامد", mother:"هدى فريد خوج",
+          spouses:["نهال نجى حجازي"], children:[
+          { id:"c5_3_1", name:"باسم", gender:"male",
+          photo: "images/c5_3_1.jpg", father:"صفوان", mother:"نهال نجي حجازي", children:[] },
+          { id:"c5_3_2", name:"علي", gender:"male",
+          photo: "images/c5_3_2.jpg", father:"صفوان", mother:"نهال نجي حجازي", children:[] },
+          { id:"c5_3_3", name:"عز", gender:"male",
+          photo: "images/c5_3_3.jpg", father:"صفوان", mother:"نهال نجي حجازي", children:[] },
+          { id:"c5_3_4", name:"هنا", gender:"female",
+          photo: "images/c5_3_4.jpg", father:"صفوان", mother:"نهال نجي حجازي", children:[] },
+          { id:"c5_3_5", name:"جاد", gender:"male",
+          photo: "images/c5_3_5.jpg", father:"صفوان", mother:"نهال نجي حجازي", children:[] }
+        ]},
+        { id:"c5_4", name:"باسم", gender:"male",
+          photo: "images/c5_4.jpg", deceased:true, father:"حامد", mother:"هدى فريد خوج", children:[] },
+        { id:"c5_5", name:"أحمد", gender:"male",
+          photo: "images/c5_5.jpg",
+          father:"حامد", mother:"هدى فريد خوج",
+          spouses:["نهى نجى حجازي"], children:[
+          { id:"c5_5_1", name:"روز", gender:"female",
+          photo: "images/c5_5_1.jpg", father:"أحمد", mother:"نهى نجي حجازي", children:[] },
+          { id:"c5_5_2", name:"أنمار", gender:"male",
+          photo: "images/c5_5_2.jpg", father:"أحمد", mother:"نهى نجي حجازي", children:[] },
+          { id:"c5_5_3", name:"أياد", gender:"male",
+          photo: "images/c5_5_3.jpg", father:"أحمد", mother:"نهى نجي حجازي", children:[] }
+        ]},
+        { id:"c5_6", name:"أسامة", gender:"male",
+          photo: "images/c5_6.jpg", father:"حامد", mother:"هدى فريد خوج", spouses:["تاله هشام مرزا"], children:[] }
+      ]
+    },
+    { id:"c6", name:"حورية", gender:"female",
+          photo: "images/c6.jpg", deceased:true, father:"عبدالقادر أبوالخير أبوشال", mother:"خديجة حسن دعجاني", children:[] },
+    { id:"c7", name:"نجاح", gender:"female",
+          photo: "images/c7.jpg", father:"عبدالقادر أبوالخير أبوشال", mother:"خديجة حسن دعجاني", children:[] },
+    { id:"c8", name:"سميرة", gender:"female",
+          photo: "images/c8.jpg", father:"عبدالقادر أبوالخير أبوشال", mother:"خديجة حسن دعجاني", children:[] },
+    {
+      id: "c9", name: "محمد جمال", gender: "male",
+          photo: "images/c9.jpg",
+      father: "عبدالقادر أبوالخير أبوشال", mother: "خديجة حسن دعجاني",
+      spouses: ["نادية عبدالله الدر"],
+      children: [
+        { id:"c9_1", name:"حسام", gender:"male",
+          photo: "images/c9_1.jpg",
+          father:"محمد جمال", mother:"نادية عبدالله الدر",
+          spouses:[{name:"سارة عبدالحميد اللحجي", divorced:true},"ولاء يحى أبو سبعين الجهني"], children:[
+          { id:"c9_1_1", name:"جنى", gender:"female",
+          photo: "images/c9_1_1.jpg", father:"حسام", mother:"سارة عبدالحميد اللحجي", children:[] },
+          { id:"c9_1_2", name:"سيف", gender:"male",
+          photo: "images/c9_1_2.jpg", father:"حسام", mother:"ولاء يحى أبو سبعين الجهني", children:[] }
+        ]},
+        { id:"c9_2", name:"وسام", gender:"male",
+          photo: "images/c9_2.jpg", father:"محمد جمال", mother:"نادية عبدالله الدر", spouses:["سمر يعقوب أبار"], children:[] },
+        { id:"c9_3", name:"أفنان", gender:"female",
+          photo: "images/c9_3.jpg", father:"محمد جمال", mother:"نادية عبدالله الدر", children:[] },
+        { id:"c9_4", name:"بسام", gender:"male",
+          photo: "images/c9_4.jpg", father:"محمد جمال", mother:"نادية عبدالله الدر", children:[] },
+        { id:"c9_5", name:"هشام", gender:"male",
+          photo: "images/c9_5.jpg", father:"محمد جمال", mother:"نادية عبدالله الدر", children:[] },
+        { id:"c9_6", name:"آلاء", gender:"female",
+          photo: "images/c9_6.jpg", father:"محمد جمال", mother:"نادية عبدالله الدر", children:[] }
+      ]
+    },
+    {
+      id: "c10", name: "حورية", gender: "female",
+          photo: "images/c10.jpg",
+      father: "عبدالقادر أبوالخير أبوشال", mother: "خديجة حسن دعجاني",
+      spouses: ["يحى إبراهيم آل عارضه"],
+      children: [
+        { id:"c10_1", name:"حنين", gender:"female",
+          photo: "images/c10_1.jpg",
+          father:"يحى إبراهيم آل عارضه", mother:"حورية",
+          spouses:["خالد السعيد"], children:[
+          { id:"c10_1_1", name:"تالا", gender:"female",
+          photo: "images/c10_1_1.jpg", father:"خالد السعيد", mother:"حنين", children:[] },
+          { id:"c10_1_2", name:"صبا", gender:"female",
+          photo: "images/c10_1_2.jpg", father:"خالد السعيد", mother:"حنين", children:[] },
+          { id:"c10_1_3", name:"سلمان", gender:"male",
+          photo: "images/c10_1_3.jpg", father:"خالد السعيد", mother:"حنين", children:[] }
+        ]},
+        { id:"c10_2", name:"إبتهال", gender:"female",
+          photo: "images/c10_2.jpg", father:"يحى إبراهيم آل عارضه", mother:"حورية", spouses:["حسن حسين أبوركبة"], children:[] },
+        { id:"c10_3", name:"ياسر", gender:"male",
+          photo: "images/c10_3.jpg",
+          father:"يحى إبراهيم آل عارضه", mother:"حورية",
+          spouses:["ليان إحسان"], children:[
+          { id:"c10_3_1", name:"يارا", gender:"female",
+          photo: "images/c10_3_1.jpg", father:"ياسر", mother:"ليان إحسان", children:[] }
+        ]},
+        { id:"c10_4", name:"مروان", gender:"male",
+          photo: "images/c10_4.jpg", father:"يحى إبراهيم آل عارضه", mother:"حورية", spouses:["أسيل ماجد عليمي"], children:[] },
+        { id:"c10_5", name:"رهف", gender:"female",
+          photo: "images/c10_5.jpg", father:"يحى إبراهيم آل عارضه", mother:"حورية", children:[] },
+        { id:"c10_6", name:"عامر", gender:"male",
+          photo: "images/c10_6.jpg", father:"يحى إبراهيم آل عارضه", mother:"حورية", children:[] }
+      ]
+    }
+  ]
+};
+
+// ─────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────
+let allNodes = [];
+function flattenAll(node, path = []) {
+  const p = [...path, node];
+  allNodes.push({ node, path: p });
+  (node.children || []).forEach(c => flattenAll(c, p));
+}
+flattenAll(familyData);
+
+function findById(id) {
+  return allNodes.find(n => n.node.id === id);
+}
+function gCls(p) { return p.deceased ? 'deceased' : p.gender === 'male' ? 'male' : 'female'; }
+function gIcon(p) { return p.deceased ? '🕊️' : p.gender === 'male' ? '♂' : '♀'; }
+function gAvatar(p, size='100%') {
+  if (p.photo) {
+    const fallback = p.deceased ? '🕊️' : p.gender === 'male' ? '♂' : '♀';
+    return `<img src="${p.photo}" alt="${p.name}" style="width:${size};height:${size};object-fit:cover;border-radius:50%;display:block" onerror="this.style.display='none';this.parentElement.setAttribute('data-icon','${fallback}');this.parentElement.classList.add('no-photo')">`;
+  }
+  return gIcon(p);
+}
+
+// Renders a spouse — accepts string or {name, divorced:true}
+function spouseName(s) { return typeof s === 'string' ? s : s.name; }
+function spouseDiv(s, cls='spouse-tag', nodeGender='male') {
+  const name = spouseName(s);
+  const div = typeof s === 'object' && s.divorced;
+  const dead = typeof s === 'object' && s.deceased;
+  const spouseGender = nodeGender === 'male' ? 'female' : 'male';
+  const extra = (div ? ' divorced' : '') + (dead ? ' deceased-spouse' : '');
+  const icon = div ? '' : '💍 ';
+  const deceasedLabel = dead ? ` <span style="font-size:0.65rem">(${spouseGender==='female'?'رحمها الله':'رحمه الله'})</span>` : '';
+  const label = div ? ` <span style="color:#f87171;font-size:0.65rem">(${nodeGender==='female'?'منفصل':'منفصلة'})</span>` : '';
+  return `<div class="${cls}${extra}">${icon}${name}${deceasedLabel}${label}</div>`;
+}
+function spouseSpan(s, cls='child-spouse-badge', nodeGender='male') {
+  const name = spouseName(s);
+  const div = typeof s === 'object' && s.divorced;
+  const dead = typeof s === 'object' && s.deceased;
+  const spouseGender = nodeGender === 'male' ? 'female' : 'male';
+  const extra = (div ? ' divorced' : '') + (dead ? ' deceased-spouse' : '');
+  const icon = div ? '' : '💍 ';
+  const deceasedLabel = dead ? ` <span style="font-size:0.62rem">(${spouseGender==='female'?'رحمها الله':'رحمه الله'})</span>` : '';
+  const label = div ? ` <span style="color:#f87171;font-size:0.62rem">(${nodeGender==='female'?'منفصل':'منفصلة'})</span>` : '';
+  return `<span class="${cls}${extra}">${icon}${name}${deceasedLabel}${label}</span>`;
+}
+
+
+// ─────────────────────────────────────────────
+// SIDEBAR TREE
+// ─────────────────────────────────────────────
+let activeSidebarId = null;
+
+function buildSidebar() {
+  const container = document.getElementById('sidebarTree');
+  container.innerHTML = '';
+
+  // Root item
+  container.appendChild(makeSidebarItem(familyData, 0));
+
+  // Children at level 1
+  (familyData.children || []).forEach(child => {
+    container.appendChild(makeSidebarItem(child, 1));
+    // Level 2
+    const childrenWrap = document.createElement('div');
+    childrenWrap.className = 's-children';
+    childrenWrap.id = 'sc_' + child.id;
+    (child.children || []).forEach(gc => {
+      childrenWrap.appendChild(makeSidebarItem(gc, 2));
+      // Level 3
+      if ((gc.children || []).length > 0) {
+        const gcWrap = document.createElement('div');
+        gcWrap.className = 's-children';
+        gcWrap.id = 'sc_' + gc.id;
+        (gc.children || []).forEach(ggc => {
+          gcWrap.appendChild(makeSidebarItem(ggc, 3));
+        });
+        childrenWrap.appendChild(gcWrap);
+      }
+    });
+    container.appendChild(childrenWrap);
+  });
+}
+
+function makeSidebarItem(node, level) {
+  const hasChildren = (node.children || []).length > 0;
+  const cls = gCls(node);
+  const indentClass = level === 1 ? 's-indent' : level === 2 ? 's-indent2' : level === 3 ? 's-indent3' : '';
+  
+  const item = document.createElement('div');
+  item.className = `s-item ${indentClass}`;
+  item.id = 'si_' + node.id;
+  item.innerHTML = `
+    <div class="s-glyph ${cls}">${gIcon(node)}</div>
+    <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${node.name}</span>
+    ${hasChildren ? `<span class="s-count">${node.children.length}</span>` : ''}
+    ${hasChildren ? `<span class="s-chevron">▶</span>` : ''}
+  `;
+  
+  item.addEventListener('click', (e) => {
+    e.stopPropagation();
+    // Toggle children
+    if (hasChildren) {
+      const wrap = document.getElementById('sc_' + node.id);
+      if (wrap) {
+        const isOpen = wrap.classList.contains('open');
+        wrap.classList.toggle('open', !isOpen);
+        item.classList.toggle('open', !isOpen);
+      }
+    }
+    // Show in main view
+    showPerson(node.id);
+  });
+  
+  return item;
+}
+
+// ─────────────────────────────────────────────
+// MAIN VIEW
+// ─────────────────────────────────────────────
+let currentNodeId = null;
+const navHistory = [];
+
+function _showPersonCore(id) {
+  if (currentNodeId && currentNodeId !== id) navHistory.push(currentNodeId);
+  currentNodeId = id;
+  const found = findById(id);
+  if (!found) return;
+  const { node, path } = found;
+
+  // Update active sidebar
+  document.querySelectorAll('.s-item').forEach(el => el.classList.remove('active'));
+  const si = document.getElementById('si_' + id);
+  if (si) si.classList.add('active');
+  activeSidebarId = id;
+
+  // Close detail panel
+  document.getElementById('detailPanel').classList.remove('open');
+
+  const content = document.getElementById('mainContent');
+  content.innerHTML = '';
+
+  // Breadcrumb
+  const bc = document.createElement('div');
+  bc.className = 'breadcrumb';
+
+  if (path.length > 1) {
+    const parentNode = path[path.length - 2];
+    const backBtn = document.createElement('button');
+    backBtn.className = 'back-btn';
+    backBtn.innerHTML = `→ رجوع إلى ${parentNode.name}`;
+    backBtn.onclick = () => showPerson(parentNode.id);
+    bc.appendChild(backBtn);
+    bc.insertAdjacentHTML('beforeend', '<span class="bc-sep">|</span>');
+  }
+
+  bc.insertAdjacentHTML('beforeend', path.map((p, i) =>
+    `<span class="bc-item" onclick="showPerson('${p.id}')">${p.name}</span>${i < path.length-1 ? '<span class="bc-sep"> › </span>' : ''}`
+  ).join(''));
+  content.appendChild(bc);
+
+  // Root card for the selected person
+  content.appendChild(makeRootCard(node));
+
+  // If has children, show them
+  if ((node.children || []).length > 0) {
+    const connLine = document.createElement('div');
+    connLine.className = 'connector-line';
+    content.appendChild(connLine);
+
+    const spouses = node.spouses || [];
+    const hasMultipleSpouses = spouses.length > 1;
+
+    if (hasMultipleSpouses) {
+      // Group children by their mother (if node is male) or father (if node is female)
+      const parentKey = node.gender === 'male' ? 'mother' : 'father';
+
+      // Build ordered spouse list (preserve spouse order from data)
+      const spouseNames = spouses.map(s => spouseName(s));
+
+      // Group children under each spouse, plus an "unknown" bucket
+      const groups = {};
+      spouseNames.forEach(n => { groups[n] = []; });
+      groups['__other__'] = [];
+
+      node.children.forEach(child => {
+        const key = child[parentKey] || '';
+        if (groups[key] !== undefined) {
+          groups[key].push(child);
+        } else {
+          groups['__other__'].push(child);
+        }
+      });
+
+      // Render one section per spouse
+      spouses.forEach(s => {
+        const sName = spouseName(s);
+        const isDivorced = typeof s === 'object' && s.divorced;
+        const isDeceased = typeof s === 'object' && s.deceased;
+        const spouseGender = node.gender === 'male' ? 'female' : 'male';
+        const deceasedLabel = isDeceased ? ` <span style="font-size:0.65rem">(${spouseGender==='female'?'رحمها الله':'رحمه الله'})</span>` : '';
+        const groupChildren = groups[sName] || [];
+
+        const section = document.createElement('div');
+        section.style.cssText = 'margin-bottom: 28px;';
+
+        // Spouse group header
+        const header = document.createElement('div');
+        header.className = 'spouse-group-header' + (isDeceased ? ' deceased-spouse-header' : '');
+        const divLabel = isDivorced
+          ? `<span class="spouse-group-tag divorced">${node.gender === 'female' ? 'منفصل' : 'منفصلة'}</span>`
+          : isDeceased ? '' : `<span class="spouse-group-tag">${node.gender === 'female' ? 'زوج حالي' : 'زوجة حالية'}</span>`;
+        header.innerHTML = `
+          <div class="spouse-group-name">${isDivorced ? '' : '💍 '}${sName}${deceasedLabel} ${divLabel}</div>
+          <div class="spouse-group-count">${groupChildren.length} ${groupChildren.length === 1 ? 'ابن/ابنة' : 'أبناء'}</div>
+        `;
+        section.appendChild(header);
+
+        if (groupChildren.length > 0) {
+          const grid = document.createElement('div');
+          grid.className = 'children-grid';
+          groupChildren.forEach(child => grid.appendChild(makeChildCard(child)));
+          section.appendChild(grid);
+        } else {
+          const empty = document.createElement('div');
+          empty.style.cssText = 'color:var(--text-muted);font-size:0.82rem;padding:10px 0 0;opacity:0.6';
+          empty.textContent = 'لا يوجد أبناء مسجلون من هذا الزواج';
+          section.appendChild(empty);
+        }
+        content.appendChild(section);
+      });
+
+      // Any children not matched to a spouse
+      if (groups['__other__'].length > 0) {
+        const section = document.createElement('div');
+        const header = document.createElement('div');
+        header.className = 'spouse-group-header';
+        header.innerHTML = `<div class="spouse-group-name">أبناء غير محددي الأم</div>`;
+        section.appendChild(header);
+        const grid = document.createElement('div');
+        grid.className = 'children-grid';
+        groups['__other__'].forEach(child => grid.appendChild(makeChildCard(child)));
+        section.appendChild(grid);
+        content.appendChild(section);
+      }
+
+    } else {
+      // Single spouse — original flat layout
+      const genLabel = document.createElement('div');
+      genLabel.className = 'gen-label';
+      genLabel.textContent = `الأبناء (${node.children.length})`;
+      content.appendChild(genLabel);
+
+      const grid = document.createElement('div');
+      grid.className = 'children-grid';
+      node.children.forEach(child => grid.appendChild(makeChildCard(child)));
+      content.appendChild(grid);
+    }
+
+  } else {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'color:var(--text-muted);font-size:0.9rem;margin-top:20px;text-align:center;opacity:0.6';
+    empty.textContent = 'لا يوجد أبناء مسجلون';
+    content.appendChild(empty);
+  }
+
+  content.scrollTop = 0;
+}
+
+function makeRootCard(node) {
+  const cls = gCls(node);
+  const card = document.createElement('div');
+  card.className = `root-card ${cls}`;
+
+  const childCount = (node.children || []).length;
+  const spousesHtml = (node.spouses || []).map(s => spouseDiv(s, 'spouse-tag', node.gender)).join('');
+
+  card.innerHTML = `
+    <div class="root-avatar ${cls}">${gAvatar(node)}</div>
+    <div class="root-info">
+      <div class="root-name ${node.deceased?'deceased-text':''}">${node.name} ${node.deceased?`<span style="font-size:0.8rem;color:var(--deceased-light)">(${node.gender==='female'?'رحمها الله':'رحمه الله'})</span>`:''}</div>
+      ${spousesHtml ? `<div class="root-spouses">${spousesHtml}</div>` : ''}
+      <div class="root-meta">
+        ${node.gender==='male'?'ذكر':'أنثى'} &nbsp;·&nbsp;
+        ${childCount > 0 ? `${childCount} ${childCount===1?'ابن/ابنة':'أبناء'}` : 'لا يوجد أبناء'}
+      </div>
+    </div>
+    <div class="root-actions">
+      <button class="action-btn" onclick="showDetail('${node.id}')">التفاصيل ▸</button>
+    </div>
+  `;
+  return card;
+}
+
+function makeChildCard(node) {
+  const cls = gCls(node);
+  const hasKids = (node.children || []).length > 0;
+  const card = document.createElement('div');
+  card.className = `child-card ${cls}`;
+  card.id = 'card_' + node.id;
+
+  const spousesHtml = (node.spouses || []).map(s => spouseSpan(s, 'child-spouse-badge', node.gender)).join('');
+
+  card.innerHTML = `
+    <div class="child-header">
+      <div class="child-avatar ${cls}">${gAvatar(node)}</div>
+      <div class="child-name ${node.deceased?'deceased-text':''}">${node.name}${node.deceased?` <span style="font-size:0.7rem;color:var(--deceased-light)">(${node.gender==='female'?'رحمها الله':'رحمه الله'})</span>`:''}</div>
+    </div>
+    ${spousesHtml ? `<div class="child-spouse">${spousesHtml}</div>` : ''}
+    <div class="child-footer">
+      <span class="child-count">${hasKids ? `👨‍👩‍👧 ${node.children.length} أبناء` : ''}</span>
+      ${hasKids ? `<button class="drill-btn" onclick="showPerson('${node.id}')">عرض الفرع ←</button>` : `<button class="drill-btn" onclick="showDetail('${node.id}')">التفاصيل ▸</button>`}
+    </div>
+  `;
+
+  card.addEventListener('mouseenter', e => showTooltip(e, node));
+  card.addEventListener('mouseleave', hideTooltip);
+  card.addEventListener('click', () => {
+    if (hasKids) showPerson(node.id);
+    else showDetail(node.id);
+  });
+
+  return card;
+}
+
+// ─────────────────────────────────────────────
+// DETAIL PANEL
+// ─────────────────────────────────────────────
+function showDetail(id) {
+  const found = findById(id);
+  if (!found) return;
+  const { node, path } = found;
+  const panel = document.getElementById('detailPanel');
+  const inner = document.getElementById('detailInner');
+  panel.classList.add('open');
+
+  const cls = gCls(node);
+  const spousesHtml = (node.spouses||[]).map(s => spouseSpan(s, 'child-spouse-badge', node.gender)).join(' ');
+  const pathHtml = path.map(p=>p.name).join(' › ');
+
+  const fatherName = node.father || '—';
+  const motherName = node.mother || '—';
+
+  const childrenHtml = (node.children||[]).length > 0
+    ? `<div class="detail-children">
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:8px;letter-spacing:1px">الأبناء</div>
+        ${node.children.map(c=>`
+          <div class="detail-child-item" onclick="showPerson('${c.id}')">
+            <div class="s-glyph ${gCls(c)}" style="width:18px;height:18px;font-size:0.55rem">${gIcon(c)}</div>
+            ${c.name}
+          </div>`).join('')}
+      </div>` : '';
+
+  inner.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="root-avatar ${cls}" style="width:44px;height:44px;font-size:1.2rem;overflow:hidden">${gAvatar(node)}</div>
+        <div class="detail-name">${node.name}</div>
+      </div>
+      <span style="cursor:pointer;color:var(--text-muted);font-size:1.1rem" onclick="document.getElementById('detailPanel').classList.remove('open')">✕</span>
+    </div>
+    <div class="detail-row"><strong>الجنس:</strong> ${node.gender==='male'?'ذكر':'أنثى'}</div>
+    <div class="detail-row"><strong>الحالة:</strong> ${node.deceased?`🕊️ ${node.gender==='female'?'رحمها الله':'رحمه الله'}`:'✅ حي'}</div>
+    <div class="detail-row"><strong>اسم الأب:</strong> ${fatherName}</div>
+    <div class="detail-row"><strong>اسم الأم:</strong> ${motherName}</div>
+    ${spousesHtml ? `<div class="detail-row"><strong>الزوج/ة:</strong><div style="flex:1">${spousesHtml}</div></div>` : ''}
+    <div class="detail-row"><strong>سلسلة النسب:</strong> <span style="font-size:0.75rem;line-height:1.5">${pathHtml}</span></div>
+    ${childrenHtml}
+    ${(node.children||[]).length > 0 ? `<button class="action-btn" style="width:100%;margin-top:12px;text-align:center" onclick="showPerson('${node.id}')">عرض الفرع الكامل ←</button>` : ''}
+  `;
+}
+
+// ─────────────────────────────────────────────
+// TOOLTIP
+// ─────────────────────────────────────────────
+const tooltip = document.getElementById('tooltip');
+function showTooltip(e, node) {
+  tooltip.innerHTML = `
+    <div class="tt-name">${node.name}</div>
+    <div class="tt-row"><b>الجنس:</b> ${node.gender==='male'?'ذكر':'أنثى'}</div>
+    <div class="tt-row"><b>الحالة:</b> ${node.deceased?'🕊️ متوفى':'✅ حي'}</div>
+    ${(node.spouses||[]).length ? `<div class="tt-row"><b>الزوج/ة:</b> ${node.spouses.map(spouseName).join('، ')}</div>` : ''}
+    <div class="tt-row"><b>الأبناء:</b> ${(node.children||[]).length}</div>
+  `;
+  tooltip.classList.add('visible');
+  posTooltip(e);
+}
+function posTooltip(e) {
+  tooltip.style.left = Math.min(e.clientX + 14, window.innerWidth - 260) + 'px';
+  tooltip.style.top = Math.max(e.clientY - 10, 10) + 'px';
+}
+function hideTooltip() { tooltip.classList.remove('visible'); }
+document.addEventListener('mousemove', e => { if(tooltip.classList.contains('visible')) posTooltip(e); });
+
+// ─────────────────────────────────────────────
+// SEARCH
+// ─────────────────────────────────────────────
+const searchInput = document.getElementById('searchInput');
+const searchDropdown = document.getElementById('searchDropdown');
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim();
+  if (!q) { searchDropdown.classList.remove('open'); return; }
+
+  const results = allNodes
+    .filter(({node}) => node.name && node.name.includes(q))
+    .slice(0, 12);
+
+  if (!results.length) {
+    searchDropdown.innerHTML = `<div class="search-item" style="color:var(--text-muted)">لا توجد نتائج</div>`;
+  } else {
+    searchDropdown.innerHTML = results.map(({node}) => `
+      <div class="search-item" onclick="selectSearch('${node.id}','${node.name.replace(/'/g,"\\'")}')">
+        <div class="s-dot" style="background:${node.deceased?'var(--deceased)':node.gender==='male'?'var(--male)':'var(--female)'}"></div>
+        ${node.name}
+        <span style="font-size:0.7rem;color:var(--text-muted);margin-right:auto">${(node.children||[]).length > 0 ? (node.children||[]).length + ' أبناء' : ''}</span>
+      </div>`).join('');
+  }
+  searchDropdown.classList.add('open');
+});
+
+searchInput.addEventListener('blur', () => setTimeout(() => searchDropdown.classList.remove('open'), 200));
+
+function selectSearch(id, name) {
+  searchInput.value = name;
+  searchDropdown.classList.remove('open');
+  navHistory.length = 0;
+
+  // Expand sidebar path
+  const found = findById(id);
+  if (found) {
+    found.path.forEach(p => {
+      const wrap = document.getElementById('sc_' + p.id);
+      const item = document.getElementById('si_' + p.id);
+      if (wrap) { wrap.classList.add('open'); }
+      if (item) { item.classList.add('open'); }
+    });
+  }
+
+  showPerson(id);
+
+  // Scroll sidebar item into view
+  setTimeout(() => {
+    const si = document.getElementById('si_' + id);
+    if (si) si.scrollIntoView({ block: 'center', behavior: 'smooth' });
+
+    // Highlight the card if visible
+    const card = document.getElementById('card_' + id);
+    if (card) {
+      card.classList.add('highlighted');
+      setTimeout(() => card.classList.remove('highlighted'), 4000);
+      card.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+  }, 150);
+}
+
+// ─────────────────────────────────────────────
+// MOBILE JS
+// ─────────────────────────────────────────────
+function openMobileSidebar() {
+  document.querySelector('.sidebar').classList.add('mobile-open');
+  document.getElementById('sidebarOverlay').classList.add('visible');
+}
+function closeMobileSidebar() {
+  document.querySelector('.sidebar').classList.remove('mobile-open');
+  document.getElementById('sidebarOverlay').classList.remove('visible');
+}
+function mobileGoBack() {
+  if (!currentNodeId) return;
+  const found = findById(currentNodeId);
+  if (found && found.path.length > 1) showPerson(found.path[found.path.length - 2].id);
+}
+
+// Wrapper: core + mobile side effects
+function showPerson(id) {
+  _showPersonCore(id);
+  if (window.innerWidth <= 640) {
+    closeMobileSidebar();
+    const found = findById(id);
+    const hasParent = found && found.path.length > 1;
+    const btn = document.getElementById('navBackBtn');
+    if (btn) btn.style.display = hasParent ? 'flex' : 'none';
+  }
+}
+
+// Mobile search
+const mobileSearchInput = document.getElementById('mobileSearchInput');
+const mobileSearchResults = document.getElementById('mobileSearchResults');
+function openMobileSearch() {
+  document.getElementById('searchModal').classList.add('open');
+  setTimeout(() => mobileSearchInput.focus(), 80);
+}
+function closeMobileSearch() {
+  document.getElementById('searchModal').classList.remove('open');
+  mobileSearchInput.value = '';
+  mobileSearchResults.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--text-muted)">اكتب اسماً للبحث</div>';
+}
+mobileSearchInput.addEventListener('input', () => {
+  const q = mobileSearchInput.value.trim();
+  if (!q) { mobileSearchResults.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--text-muted)">اكتب اسماً للبحث</div>'; return; }
+  const results = allNodes.filter(({node: n}) => n.name && n.name.includes(q)).slice(0, 20);
+  if (!results.length) { mobileSearchResults.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--text-muted)">لا توجد نتائج</div>'; return; }
+  mobileSearchResults.innerHTML = results.map(({node: n, path: p}) =>
+    `<div class="search-modal-item" onclick="mobilePick('${n.id}')">
+      <div style="width:11px;height:11px;border-radius:50%;flex-shrink:0;margin-top:2px;background:${n.deceased?'var(--deceased)':n.gender==='male'?'var(--male)':'var(--female)'}"></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:700;font-size:1rem;color:var(--text)">${n.name}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.slice(0,-1).map(x=>x.name).join(' › ')}</div>
+      </div>
+      ${(n.children||[]).length>0?`<span style="font-size:0.72rem;color:var(--text-muted);flex-shrink:0">${n.children.length} أبناء</span>`:''}
+    </div>`
+  ).join('');
+});
+function mobilePick(id) {
+  closeMobileSearch();
+  navHistory.length = 0;
+  const found = findById(id);
+  if (found) found.path.forEach(p => { const w=document.getElementById('sc_'+p.id),s=document.getElementById('si_'+p.id); if(w)w.classList.add('open'); if(s)s.classList.add('open'); });
+  showPerson(id);
+  setTimeout(() => { const c=document.getElementById('card_'+id); if(c){c.classList.add('highlighted');setTimeout(()=>c.classList.remove('highlighted'),3500);} }, 120);
+}
+
+// Disable hover tooltip on touch screens
+if ('ontouchstart' in window) {
+  document.addEventListener('touchstart', hideTooltip, {passive:true});
+}
+
+// Swipe right from left edge → open sidebar
+let _tx0 = 0;
+document.addEventListener('touchstart', e => { _tx0 = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend', e => {
+  if (window.innerWidth > 640) return;
+  const dx = e.changedTouches[0].clientX - _tx0;
+  if (_tx0 < 28 && dx > 55) openMobileSidebar();
+  if (dx < -55 && document.querySelector('.sidebar').classList.contains('mobile-open')) closeMobileSidebar();
+}, {passive:true});
+
+// ─────────────────────────────────────────────
+// IN-APP BROWSER DETECTION
+// ─────────────────────────────────────────────
+(function() {
+  const ua = navigator.userAgent || '';
+  // WhatsApp, Instagram, Facebook, Messages (all use restricted WKWebView)
+  const isInApp = /WhatsApp|Instagram|FBAN|FBAV|Twitter|Line|KAKAOTALK/i.test(ua)
+    || ((/iPhone|iPad|iPod/.test(ua)) && !window.navigator.standalone && !/Safari\//.test(ua) && /AppleWebKit/.test(ua));
+  if (isInApp) {
+    const banner = document.getElementById('safariBanner');
+    if (banner) banner.style.display = 'flex';
+    // Push content down to make room for banner
+    document.body.style.paddingTop = '160px';
+  }
+})();
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+
+
+
+buildSidebar();
+showPerson('root');
+</script>
+</body>
+</html>
